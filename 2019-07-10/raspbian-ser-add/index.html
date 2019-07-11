@@ -286,6 +286,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019-07-10/raspbian-ser-add/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019-07-10/raspbian-ser-add/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -705,8 +715,8 @@
 <!-- LOCAL: You can save these files to your site and update links -->
     
         
-        <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-        <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+        <link rel="stylesheet" href="https://aws.dogcraft.top/lodog/default.css">
+        <script src="https://aws.dogcraft.top/lodog/gitment.browser.js"></script>
     
 <!-- END LOCAL -->
 
@@ -715,10 +725,12 @@
     
       <script type="text/javascript">
       function renderGitment(){
-        var gitment = new Gitment({
+        var gitment = new Gitmint({
             id: window.location.pathname, 
             owner: 'ybw2016v',
             repo: 'ybw2016v.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
             
             oauth: {
             
