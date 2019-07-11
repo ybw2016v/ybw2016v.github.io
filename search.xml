@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[dog]]></title>
-    <url>%2F2019-07-10%2Fdog%2F</url>
-    <content type="text"><![CDATA[DOGggg]]></content>
+    <title><![CDATA[树莓派系统服务注册]]></title>
+    <url>%2F2019-07-10%2Fraspbian-ser-add%2F</url>
+    <content type="text"><![CDATA[树莓派系统服务注册今天给树莓派安装AriaNG时将aria2启动脚本添加/etc/init.d/后报错，系统未发现该服务。后经多方查找，发现只在/etc/init.d/添加启动脚本还不够，需要再次运行 1pi@raspberrypi:~ $ sudo update-rc.d aria2c defaults 其中 aria2c是启动脚本的名字。 附aria2c内容 12345678910111213141516171819202122232425262728#!/bin/sh### BEGIN INIT INFO# Provides: aria2c# Required-Start: $network $local_fs $remote_fs# Required-Stop: $network $local_fs $remote_fs# Default-Start: 2 3 4 5# Default-Stop: 0 1 6# Short-Description: aria2c RPC init script.# Description: Starts and stops aria2 RPC services.### END INIT INFOUSER=rootRETVAL=0case "$1" in start) echo "Starting service Aria2..." aria2c --conf-path=/path/to/config/aria2.conf -D echo "Start service done." ;; stop) echo "Stoping service Aria2..." killall aria2c echo "Stop service done." ;; esac exit $RETVAL]]></content>
   </entry>
   <entry>
     <title><![CDATA[Hello World]]></title>
