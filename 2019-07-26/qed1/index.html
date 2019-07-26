@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Dogcraft" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="相关理论一维场即一维空间加上一维时间 基于拉氏量的路径积分 一维标量场给等效成空间内分立格点的（在空间维与时间维具有双重周期条件的）类似与固体物理的布洛赫定理的场。 核心方法：量子力学之中的变分法。稳定的经典场系统的作用量总是取最小值，量子力学之中不确定原理导致非最小作用量的状态仍然有机会出现。量子系统的具体状态由概率确定，由作用量小的状态向作用量大的状态变化（非时间演化）的概率由作用量的差值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于路径积分-蒙特卡洛方法的简单一维场">
+<meta property="og:url" content="http://blog.dogcraft.com/2019-07-26/qed1/index.html">
+<meta property="og:site_name" content="Dogcraft">
+<meta property="og:description" content="相关理论一维场即一维空间加上一维时间 基于拉氏量的路径积分 一维标量场给等效成空间内分立格点的（在空间维与时间维具有双重周期条件的）类似与固体物理的布洛赫定理的场。 核心方法：量子力学之中的变分法。稳定的经典场系统的作用量总是取最小值，量子力学之中不确定原理导致非最小作用量的状态仍然有机会出现。量子系统的具体状态由概率确定，由作用量小的状态向作用量大的状态变化（非时间演化）的概率由作用量的差值">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/001.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/002.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_7_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_7_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_8_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_8_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_9_1.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_10_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_10_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_11_1.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_13_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_13_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_14_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_14_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_15_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_15_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_16_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_16_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_17_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_17_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_18_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_18_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_19_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_19_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_20_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_20_2.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_21_0.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-26/qed1/output_21_2.png">
+<meta property="og:updated_time" content="2019-07-26T07:40:10.970Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于路径积分-蒙特卡洛方法的简单一维场">
+<meta name="twitter:description" content="相关理论一维场即一维空间加上一维时间 基于拉氏量的路径积分 一维标量场给等效成空间内分立格点的（在空间维与时间维具有双重周期条件的）类似与固体物理的布洛赫定理的场。 核心方法：量子力学之中的变分法。稳定的经典场系统的作用量总是取最小值，量子力学之中不确定原理导致非最小作用量的状态仍然有机会出现。量子系统的具体状态由概率确定，由作用量小的状态向作用量大的状态变化（非时间演化）的概率由作用量的差值">
+<meta name="twitter:image" content="http://blog.dogcraft.com/2019-07-26/qed1/001.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.dogcraft.com/2019-07-26/qed1/">
+
+
+
+
+
+  <title>基于路径积分-蒙特卡洛方法的简单一维场 | Dogcraft</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dogcraft</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.dogcraft.com/2019-07-26/qed1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dogcraft">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dogcraft">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于路径积分-蒙特卡洛方法的简单一维场</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T15:38:16+08:00">
+                2019-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019-07-26/qed1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019-07-26/qed1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- 基于路径积分-蒙特卡洛方法的简单一维场 -->
+
+<h2 id="相关理论"><a href="#相关理论" class="headerlink" title="相关理论"></a>相关理论</h2><p>一维场即一维空间加上一维时间</p>
+<p>基于拉氏量的路径积分</p>
+<p>一维标量场给等效成空间内分立格点的（在空间维与时间维具有双重周期条件的）类似与固体物理的布洛赫定理的场。</p>
+<p>核心方法：量子力学之中的变分法。稳定的经典场系统的作用量总是取最小值，量子力学之中不确定原理导致非最小作用量的状态仍然有机会出现。量子系统的具体状态由概率确定，由作用量小的状态向作用量大的状态变化（非时间演化）的概率由作用量的差值的负指数确定。</p>
+<p>格点方法下的场的拉格朗日量。具体方法见ppt截图。</p>
+<p><img src="001.png" alt="tu1"></p>
+<p><img src="002.png" alt="tu2"></p>
+<h2 id="编程与计算"><a href="#编程与计算" class="headerlink" title="编程与计算"></a>编程与计算</h2><p>python与C++混合编程。C++编译计算模块加速运算性能，利用python的众多的数据处理与分析工具进行可视化输出与处理。</p>
+<p>相关的C++程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">double</span> *dog, <span class="keyword">int</span> Ndex, <span class="keyword">int</span> Tdex, <span class="keyword">int</span> Xdex, <span class="keyword">int</span> Nmax, <span class="keyword">int</span> Tmax, <span class="keyword">int</span> Xmax, <span class="keyword">double</span> msq, <span class="keyword">double</span> lam, <span class="keyword">double</span> dx)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ps</span><span class="params">(<span class="keyword">double</span> *dog, <span class="keyword">int</span> X, <span class="keyword">int</span> T, <span class="keyword">int</span> N, <span class="keyword">int</span> Xmax, <span class="keyword">int</span> Tmax, <span class="keyword">double</span> lam, <span class="keyword">double</span> msq, <span class="keyword">int</span> Nindex, <span class="keyword">int</span> Xindex, <span class="keyword">int</span> Tindex)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> Xb = X - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> Xf = X + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> Tb = T - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> Tf = T + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (Xb &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Xb = Xmax - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (Tf &gt;= Tmax)</span><br><span class="line">    &#123;</span><br><span class="line">        Tf = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (Tb &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Tb = Tmax - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (Tf &gt;= Tmax)</span><br><span class="line">    &#123;</span><br><span class="line">        Xf = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex] - dog[N * Nindex + Tf * Tindex + X * Xindex], <span class="number">2</span>) + <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex] - dog[N * Nindex + Tb * Tindex + X * Xindex], <span class="number">2</span>) + <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex] - dog[N * Nindex + T * Tindex + Xf * Xindex], <span class="number">2</span>) + <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex] - dog[N * Nindex + T * Tindex + Xb * Xindex], <span class="number">2</span>) + msq * <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex], <span class="number">2</span>) + lam * msq * <span class="built_in">pow</span>(dog[N * Nindex + T * Tindex + X * Xindex], <span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cal</span><span class="params">(<span class="keyword">double</span> *dog, <span class="keyword">int</span> Ndex, <span class="keyword">int</span> Tdex, <span class="keyword">int</span> Xdex, <span class="keyword">int</span> Nmax, <span class="keyword">int</span> Tmax, <span class="keyword">int</span> Xmax, <span class="keyword">double</span> msq, <span class="keyword">double</span> lam, <span class="keyword">double</span> dx)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> acp = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> xx;</span><br><span class="line">    <span class="keyword">int</span> tt;</span><br><span class="line">    <span class="built_in">std</span>::default_random_engine seed;</span><br><span class="line">    seed.seed(time(<span class="literal">NULL</span>));</span><br><span class="line">    <span class="comment">// seed.seed(1234);</span></span><br><span class="line">    <span class="comment">// std::uniform_real_distribution&lt;double&gt; ran1(-0.1,0.1);</span></span><br><span class="line">    <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; ran2(<span class="number">-1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">    <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; ran3(<span class="number">0</span>, <span class="number">1.0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; T_iter;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; X_iter;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Tmax; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        T_iter.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Xmax; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        X_iter.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> in = <span class="number">1</span>; in &lt; (Nmax - <span class="number">1</span>); in++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> ix = <span class="number">0</span>; ix &lt; Xmax; ix++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> it = <span class="number">0</span>; it &lt; Tmax; it++)</span><br><span class="line">            &#123;</span><br><span class="line">                dog[(in + <span class="number">1</span>) * Ndex + ix * Xdex + it * Tdex] = dog[(in)*Ndex + ix * Xdex + it * Tdex];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">std</span>::random_shuffle(X_iter.begin(), X_iter.end());</span><br><span class="line">        <span class="built_in">std</span>::random_shuffle(T_iter.begin(), T_iter.end());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> ix = <span class="number">0</span>; ix &lt; Xmax; ix++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> it = <span class="number">0</span>; it &lt; Tmax; it++)</span><br><span class="line">            &#123;</span><br><span class="line">                xx = X_iter[ix];</span><br><span class="line">                tt = T_iter[it];</span><br><span class="line"></span><br><span class="line">                dog[(in + <span class="number">1</span>) * Ndex + xx * Xdex + tt * Tdex] = dog[(in + <span class="number">1</span>) * Ndex + xx * Xdex + tt * Tdex] + dx * ran2(seed);</span><br><span class="line">                <span class="keyword">double</span> ds = ps(dog, xx, tt, (in + <span class="number">1</span>), Xmax, Tmax, lam, msq, Ndex, Xdex, Tdex) - ps(dog, xx, tt, (in), Xmax, Tmax, lam, msq, Ndex, Xdex, Tdex);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">double</span> pan = ran3(seed);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (pan &lt; <span class="built_in">exp</span>(-ds))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">/* code */</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line"></span><br><span class="line">                    dog[(in + <span class="number">1</span>) * Ndex + xx * Xdex + tt * Tdex] = dog[(in)*Ndex + xx * Xdex + tt * Tdex];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">g++ -shared -fPIC d.cpp -o d.so</span><br></pre></td></tr></table></figure>
+
+<p>python部分:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="comment">#plt.rcParams['font.sans-serif']=['FangSong_GB2312'] #用来正常显示中文标签</span></span><br><span class="line"><span class="keyword">from</span> matplotlib.font_manager <span class="keyword">import</span> _rebuild</span><br><span class="line">_rebuild()<span class="comment">#重新创建字体索引列表</span></span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line">matplotlib.rcParams[<span class="string">'font.family'</span>]=[<span class="string">'Microsoft YaHei'</span>]</span><br><span class="line">plt.rcParams[<span class="string">'axes.unicode_minus'</span>]=<span class="literal">False</span> <span class="comment">#用来正常显示负号</span></span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> numpy.ctypeslib <span class="keyword">as</span> npct</span><br></pre></td></tr></table></figure>
+
+<p>面向对象的编程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">zutai</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,a=<span class="number">0.1</span>,N=<span class="number">6000</span>,la=<span class="number">0</span>,m=<span class="number">1</span>,ls=<span class="number">1</span>)</span>:</span></span><br><span class="line">        self.mass=m</span><br><span class="line">        self.a=a</span><br><span class="line">        self.N=N</span><br><span class="line">        self.nx=int(<span class="number">5</span>/a)</span><br><span class="line">        self.nt=int(<span class="number">10</span>/a)</span><br><span class="line">        self.msq=math.pow(m*a,<span class="number">2</span>)</span><br><span class="line">        self.lam=la*a*a</span><br><span class="line">        self.ls=ls</span><br><span class="line">        self.dog=np.zeros([self.N,self.nt,self.nx],dtype=<span class="string">'float64'</span>)</span><br><span class="line">        self.Ndex=self.dog.shape[<span class="number">1</span>]*self.dog.shape[<span class="number">2</span>]</span><br><span class="line">        self.Tdex=self.dog.shape[<span class="number">2</span>]</span><br><span class="line">        self.Xdex=<span class="number">1</span></span><br><span class="line">        self.Nmax=self.dog.shape[<span class="number">0</span>]</span><br><span class="line">        self.Tmax=self.dog.shape[<span class="number">1</span>]</span><br><span class="line">        self.Xmax=self.dog.shape[<span class="number">2</span>]</span><br><span class="line">        self.ldoglib=npct.load_library(<span class="string">'d'</span>,<span class="string">'.'</span>)</span><br><span class="line">        array_1d_double = npct.ndpointer(dtype=np.float64, ndim=<span class="number">3</span>, flags=<span class="string">'CONTIGUOUS'</span>)</span><br><span class="line">        self.ldoglib.cal.argtypes=[array_1d_double,c_int,c_int,c_int,c_int,c_int,c_int,c_double,c_double,c_double]</span><br><span class="line">        self.ldoglib.cal.restype=c_int</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal</span><span class="params">(self)</span>:</span></span><br><span class="line">        self. ldoglib.cal(self.dog,self.Ndex,self.Tdex,self.Xdex,self.Nmax,self.Tmax,self.Xmax,self.msq,self.lam,self.ls)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tu</span><span class="params">(self)</span>:</span></span><br><span class="line">        av=np.zeros(self.dog.shape[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> lu <span class="keyword">in</span> range(<span class="number">0</span>,self.dog.shape[<span class="number">0</span>]):</span><br><span class="line">            av[lu]=np.mean(self.dog[lu,:,:]**<span class="number">2</span>)</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        plt.figure()</span><br><span class="line">        plt.plot(av)</span><br><span class="line">        tit=<span class="string">'$\phi^&#123;2&#125;$平均值变化图'</span>+<span class="string">' a='</span>+str(self.a)+<span class="string">'$\lambda = $ '</span>+str(self.lam)+<span class="string">' m='</span>+str(self.mass)</span><br><span class="line">        plt.title(tit)</span><br><span class="line">        plt.xlabel(<span class="string">'组态数'</span>)</span><br><span class="line">        plt.savefig(<span class="string">'phi'</span>+str((time.time()))+<span class="string">'.png'</span>)</span><br><span class="line">        plt.show()</span><br><span class="line"><span class="comment">#     def jt(self,NUM=70,Lang=25,St=1000,jian=50,zhi=21):</span></span><br><span class="line"><span class="comment">#         fu=np.zeros([NUM,Lang])</span></span><br><span class="line"><span class="comment">#         llk=np.zeros(NUM)</span></span><br><span class="line"><span class="comment">#         for kl in range(0,NUM):</span></span><br><span class="line"><span class="comment">#             for ti in range(0,Lang):</span></span><br><span class="line"><span class="comment">#                 fu[kl,ti]=np.mean((self.dog[St+jian*kl,0,:])*(self.dog[St+jian*kl,ti,:]))</span></span><br><span class="line"><span class="comment">#                 pass</span></span><br><span class="line"><span class="comment">#             pass</span></span><br><span class="line">       </span><br><span class="line">        </span><br><span class="line"><span class="comment">#         llu=fu.mean(axis=0)</span></span><br><span class="line"><span class="comment">#         llue=fu.var(axis=0)</span></span><br><span class="line"><span class="comment"># #         print('误差：'+str(llue))</span></span><br><span class="line"><span class="comment">#         lluu=(np.log(np.abs(llu)))[:zhi]</span></span><br><span class="line"><span class="comment">#         x=np.linspace(0,(zhi-1)/10,zhi)</span></span><br><span class="line"><span class="comment">#         ooo=np.polyfit(x,lluu,1)</span></span><br><span class="line"><span class="comment">#         yyy=ooo[0]*x+ooo[1]</span></span><br><span class="line"><span class="comment">#         print(ooo[0])</span></span><br><span class="line"><span class="comment">#         self.eng=ooo[0]</span></span><br><span class="line"><span class="comment">#         plt.figure()</span></span><br><span class="line"><span class="comment">#         plt.plot(x,lluu,'rx')</span></span><br><span class="line"><span class="comment">#         plt.plot(x,yyy,'-')</span></span><br><span class="line"><span class="comment"># #         for nnn in range(0,NUM):</span></span><br><span class="line"><span class="comment"># #             ddog=(np.log(np.abs(llu)))[nnn,:zhi]</span></span><br><span class="line"><span class="comment"># #             llk[nnn]=np.polyfit(x,ddog,1)</span></span><br><span class="line"><span class="comment"># #             pass</span></span><br><span class="line"><span class="comment"># #         self.res=llk</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ek</span><span class="params">(self,St=<span class="number">3000</span>,jiange=<span class="number">98</span>,dianshu=<span class="number">30</span>,shijian=<span class="number">10</span>,qv=<span class="number">6</span>)</span>:</span></span><br><span class="line">        lp=np.zeros([dianshu,self.nx])</span><br><span class="line"><span class="comment">#         tfrt=np.zeros([50,10,50])</span></span><br><span class="line">        <span class="keyword">for</span> up <span class="keyword">in</span> range(dianshu):</span><br><span class="line"></span><br><span class="line">            hu=self.dog[St+jiange*up,:,:]</span><br><span class="line"></span><br><span class="line">            ss=np.zeros_like(hu,dtype=<span class="string">'complex'</span>)</span><br><span class="line">            <span class="keyword">for</span> ii <span class="keyword">in</span> range(self.nt):</span><br><span class="line">                ss[ii,:]=np.fft.fft(hu[ii,:])</span><br><span class="line">            frt=np.zeros([shijian,self.nx],dtype=<span class="string">'complex'</span>)</span><br><span class="line">            <span class="keyword">for</span> aa <span class="keyword">in</span> range(shijian):</span><br><span class="line">                er=np.zeros(self.nx)</span><br><span class="line">                <span class="keyword">for</span> bb <span class="keyword">in</span> range(self.nt):</span><br><span class="line">                    er=er+(ss[bb,:].conjugate()*ss[(bb+aa)%self.nt,:])</span><br><span class="line">        <span class="comment">#             if aa==9 and up==1:</span></span><br><span class="line">        <span class="comment">#                 print((bb+aa)%100)</span></span><br><span class="line">        <span class="comment">#             pass</span></span><br><span class="line">                frt[aa,:]=er</span><br><span class="line">            <span class="keyword">for</span> down <span class="keyword">in</span> range(self.nx):</span><br><span class="line">                sls=frt[:,down]</span><br><span class="line">                wew=np.log(sls)</span><br><span class="line">        <span class="comment">#         wew.shape</span></span><br><span class="line">                xcx=np.linspace(<span class="number">0</span>,<span class="number">1</span>-self.a,shijian)</span><br><span class="line">                xcx.shape</span><br><span class="line">                llll=np.polyfit(xcx[:qv],wew[:qv],<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">                <span class="comment">#print()</span></span><br><span class="line">                lp[up,down]=(float(llll))</span><br><span class="line">        mme=np.zeros(self.nx)</span><br><span class="line">        meer=np.zeros(self.nx)</span><br><span class="line">        xday=np.zeros(self.nx)</span><br><span class="line">        <span class="keyword">for</span> kku <span class="keyword">in</span> range(self.nx):</span><br><span class="line">            mme[kku]=-lp[:,kku].mean()</span><br><span class="line">            meer[kku]=lp[:,kku].var()</span><br><span class="line">            xday[kku]=kku</span><br><span class="line">        plt.figure()</span><br><span class="line">        plt.errorbar(xday[:int(self.nx/<span class="number">2</span>)],mme[:int(self.nx/<span class="number">2</span>)],yerr=meer[:int(self.nx/<span class="number">2</span>)],fmt=<span class="string">'rx:'</span>,ecolor=<span class="string">'b'</span>,capthick=<span class="number">2</span>,capsize=<span class="number">4</span>)</span><br><span class="line">        tit=<span class="string">'色散关系图 a='</span>+str(self.a)+<span class="string">'$\lambda = $ '</span>+str(self.lam)+<span class="string">' m='</span>+str(self.mass)</span><br><span class="line">        plt.title(tit)</span><br><span class="line">        plt.xlabel(<span class="string">"k"</span>)</span><br><span class="line">        plt.ylabel(<span class="string">'m'</span>)</span><br><span class="line"><span class="comment">#         plt.savefig()</span></span><br><span class="line">        plt.savefig(<span class="string">'san'</span>+str((time.time()))+<span class="string">'.png'</span>)</span><br><span class="line">        plt.show()</span><br><span class="line">        <span class="keyword">return</span> [mme,meer]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dd=zutai()<span class="comment">#初始化</span></span><br><span class="line">dd.cal()<span class="comment">#进行计算</span></span><br><span class="line">dd.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=dd.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_7_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_7_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(m=<span class="number">2</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_8_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_8_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[a,b]=d2.ek(jiange=<span class="number">74</span>,St=<span class="number">3040</span>)<span class="comment">#数据不够理想，可以更改采样点</span></span><br><span class="line"><span class="comment">#算了不调了，就这样了</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_9_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(m=<span class="number">3</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_10_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_10_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[a,b]=d2.ek(jiange=<span class="number">27</span>)<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_11_1.png" alt="png"></p>
+<p>m越大越离谱，减小m试试看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(m=<span class="number">0.5</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_13_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_13_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(m=<span class="number">0.25</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_14_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_14_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">0.5</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_15_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_15_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">10</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_16_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_16_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">0.5</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_17_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_17_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">1</span>,a=<span class="number">0.1</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_18_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_18_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">1</span>,a=<span class="number">0.05</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_19_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_19_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">1</span>,a=<span class="number">0.2</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_20_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_20_2.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d2=zutai(la=<span class="number">1</span>,a=<span class="number">0.125</span>)<span class="comment">#初始化</span></span><br><span class="line">d2.cal()<span class="comment">#进行计算</span></span><br><span class="line">d2.tu()<span class="comment">#画出平均数据</span></span><br><span class="line">[a,b]=d2.ek()<span class="comment">#生成色散关系</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="output_21_0.png" alt="png"></p>
+<pre><code>/home/yu/.local/lib/python3.6/site-packages/ipykernel_launcher.py:94: ComplexWarning: Casting complex values to real discards the imaginary part</code></pre><p><img src="output_21_2.png" alt="png"></p>
+<p>数据点过少，结果看看就行，不要当真。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-07-24/qed2/" rel="next" title="基于Markov chains 计算一维谐振子基态能量">
+                <i class="fa fa-chevron-left"></i> 基于Markov chains 计算一维谐振子基态能量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">dogcraft</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ybw2016v" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons">
+              </a>
+            </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://rmcar.dogcraft.top" title="自动化挪车" target="_blank">自动化挪车</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cuf.dogcraft.top" title="Cuf" target="_blank">Cuf</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关理论"><span class="nav-number">1.</span> <span class="nav-text">相关理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程与计算"><span class="nav-number">2.</span> <span class="nav-text">编程与计算</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dogcraft</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aws.dogcraft.top/lodog/default.css">
+        <script src="https://aws.dogcraft.top/lodog/gitment.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'ybw2016v',
+            repo: 'ybw2016v.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f02ff7c2c06332bfb583c6b0df8d788d5c81f28',
+            
+                client_id: '860d26fc1f02df3b590d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

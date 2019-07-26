@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-atom.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Dogcraft" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="利用马可夫链计算一维谐振子的基态能量 计算作用量 $$ dS=\frac{(u_{n-1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n-1}^{2}+u_{n}^{2})}{4} +\frac{(u_{n+1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n+1}^{2}+u_{n}^{2})}{4} $$ 在一系列旧点之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Markov chains 计算一维谐振子基态能量">
+<meta property="og:url" content="http://blog.dogcraft.com/2019-07-24/qed2/index.html">
+<meta property="og:site_name" content="Dogcraft">
+<meta property="og:description" content="利用马可夫链计算一维谐振子的基态能量 计算作用量 $$ dS=\frac{(u_{n-1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n-1}^{2}+u_{n}^{2})}{4} +\frac{(u_{n+1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n+1}^{2}+u_{n}^{2})}{4} $$ 在一系列旧点之">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-24/qed2/output_10_1.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-24/qed2/output_11_1.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-24/qed2/output_12_1.png">
+<meta property="og:image" content="http://blog.dogcraft.com/2019-07-24/qed2/output_16_1.png">
+<meta property="og:updated_time" content="2019-07-26T07:49:06.022Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于Markov chains 计算一维谐振子基态能量">
+<meta name="twitter:description" content="利用马可夫链计算一维谐振子的基态能量 计算作用量 $$ dS=\frac{(u_{n-1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n-1}^{2}+u_{n}^{2})}{4} +\frac{(u_{n+1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n+1}^{2}+u_{n}^{2})}{4} $$ 在一系列旧点之">
+<meta name="twitter:image" content="http://blog.dogcraft.com/2019-07-24/qed2/output_10_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.dogcraft.com/2019-07-24/qed2/">
+
+
+
+
+
+  <title>基于Markov chains 计算一维谐振子基态能量 | Dogcraft</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dogcraft</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.dogcraft.com/2019-07-24/qed2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dogcraft">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dogcraft">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于Markov chains 计算一维谐振子基态能量</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-24T15:40:19+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019-07-24/qed2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019-07-24/qed2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- # 基于Markov chains 计算一维谐振子基态能量 -->
+
+<p>利用马可夫链计算一维谐振子的基态能量</p>
+<p>计算作用量</p>
+<p>$$ dS=\frac{(u_{n-1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n-1}^{2}+u_{n}^{2})}{4} +\frac{(u_{n+1}+u_{n})^{2}}{2a\omega}+\frac{a\omega(u_{n+1}^{2}+u_{n}^{2})}{4} $$</p>
+<p>在一系列旧点之上乱序选取，加上某个范围内的随机数，新点与旧点进行局部作用量比较，作用量如减小，则接受新点。如果作用量增大，则按照概率$e^{dS_{2}-dS{1}}$确定是否接受。不接受的点保留旧值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">weight</span><span class="params">(<span class="keyword">double</span> x0, <span class="keyword">double</span> x1, <span class="keyword">double</span> x2, <span class="keyword">double</span> aomega)</span></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> S=<span class="number">0.0</span>;</span><br><span class="line">	S=(x1-x0)*(x1-x0)/(<span class="number">2.0</span>*aomega) + aomega*(x0*x0+x1*x1)/<span class="number">4.0</span> + (x2-x1)*(x2-x1)/(<span class="number">2.0</span>*aomega) + aomega*(x2*x2+x1*x1)/<span class="number">4.0</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">exp</span>(<span class="number">-1.0</span>*S);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>产生若干（很多）组态之后，对后面的组态求平方平均值即为基态能量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> numpy.ctypeslib <span class="keyword">as</span> npct</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libcd = npct.load_library(<span class="string">"pf"</span>, <span class="string">"."</span>)</span><br><span class="line">array_1d_double = npct.ndpointer(dtype=np.float64, ndim=<span class="number">2</span>, flags=<span class="string">'CONTIGUOUS'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libcd.hhh.argtypes=[array_1d_double,c_int,c_int,c_double,c_double]</span><br><span class="line">libcd.hhh.restype=c_int</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lu=np.zeros([<span class="number">130000</span>,<span class="number">500</span>],dtype=<span class="string">'float64'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libcd.hhh(lu,<span class="number">130000</span>,<span class="number">500</span>,<span class="number">0.1</span>,<span class="number">0.2</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>16</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">suu=np.zeros(<span class="number">130000</span>)</span><br><span class="line">sii=lu**<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> kk <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">130000</span>):</span><br><span class="line">    suu[kk]=np.mean(sii[kk,:])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(suu[<span class="number">10000</span>::<span class="number">600</span>])<span class="comment">#为防止关联性每600个取数据。</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8d80dda898&gt;]</code></pre><p><img src="output_10_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.plot(suu)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8d405b7710&gt;]</code></pre><p><img src="output_11_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.hist(suu[<span class="number">100000</span>::],<span class="number">40</span>,histtype=<span class="string">'bar'</span>,facecolor=<span class="string">'yellowgreen'</span>,alpha=<span class="number">0.75</span>) <span class="comment">#方均值分布</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>(array([  59.,  204.,  421.,  739.,  653.,  868., 1014., 1371., 1563.,
+        1890., 1927., 1802., 1762., 1831., 1505., 1209., 1271., 1342.,
+        1111., 1041.,  907.,  809.,  658.,  616.,  520.,  426.,  294.,
+         300.,  394.,  306.,  263.,  203.,  161.,  154.,  107.,   70.,
+         109.,   86.,   27.,    7.]),
+ array([0.30646848, 0.32209395, 0.33771941, 0.35334488, 0.36897034,
+        0.3845958 , 0.40022127, 0.41584673, 0.4314722 , 0.44709766,
+        0.46272313, 0.47834859, 0.49397406, 0.50959952, 0.52522499,
+        0.54085045, 0.55647592, 0.57210138, 0.58772684, 0.60335231,
+        0.61897777, 0.63460324, 0.6502287 , 0.66585417, 0.68147963,
+        0.6971051 , 0.71273056, 0.72835603, 0.74398149, 0.75960695,
+        0.77523242, 0.79085788, 0.80648335, 0.82210881, 0.83773428,
+        0.85335974, 0.86898521, 0.88461067, 0.90023614, 0.9158616 ,
+        0.93148707]),
+ &lt;a list of 40 Patch objects&gt;)</code></pre><p><img src="output_12_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.mean(suu[<span class="number">10000</span>::<span class="number">600</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>0.49547505767135985</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hy=lu[<span class="number">10000</span>::<span class="number">600</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loo=np.zeros(<span class="number">500</span>)</span><br><span class="line"><span class="keyword">for</span> po <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">500</span>):</span><br><span class="line">    loo[po]=np.mean(lu[<span class="number">10000</span>,:]*lu[<span class="number">10000</span>+po*<span class="number">1</span>,:])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.plot((looo[<span class="number">5</span>:<span class="number">50</span>]),<span class="string">'rx'</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x7f8d3f03e208&gt;]</code></pre><p><img src="output_16_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">looo=np.log(loo)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loo</span><br></pre></td></tr></table></figure>
+
+<pre><code>array([ 0.34280532,  0.13145158,  0.09545402,  0.05821956,  0.11446664,
+       -0.00101133,  0.01600951,  0.01831628,  0.03161569,  0.03762436,
+        0.04253305,  0.03503241, -0.01741445,  0.0206876 ,  0.0559742 ,
+        0.00657246,  0.02660626,  0.04883725,  0.02803961,  0.04471572,
+       -0.03246027,  0.02030995,  0.04995083,  0.08313026,  0.03374789,
+        0.02868077, -0.04105371, -0.01369022, -0.02838291, -0.01871887,
+        0.02223757,  0.04172896,  0.01848376,  0.06792485,  0.00939457,
+       -0.0263474 , -0.00551463,  0.06894225, -0.01276136, -0.0205876 ])</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.var(suu[<span class="number">10000</span>::<span class="number">600</span>]) <span class="comment">#f方差</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>0.010724637054091532</code></pre><p>相关C++ 模块代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;random&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">hhh</span><span class="params">(<span class="keyword">double</span> * x,<span class="keyword">int</span> hang,<span class="keyword">int</span> lie, <span class="keyword">double</span> aw, <span class="keyword">double</span> dx )</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">weight</span><span class="params">(<span class="keyword">double</span> x0, <span class="keyword">double</span> x1, <span class="keyword">double</span> x2, <span class="keyword">double</span> aomega)</span></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> S=<span class="number">0.0</span>;</span><br><span class="line">	S=(x1-x0)*(x1-x0)/(<span class="number">2.0</span>*aomega) + aomega*(x0*x0+x1*x1)/<span class="number">4.0</span> + (x2-x1)*(x2-x1)/(<span class="number">2.0</span>*aomega) + aomega*(x2*x2+x1*x1)/<span class="number">4.0</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">exp</span>(<span class="number">-1.0</span>*S);</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hhh</span><span class="params">(<span class="keyword">double</span> * x,<span class="keyword">int</span> hang,<span class="keyword">int</span> lie, <span class="keyword">double</span> aw, <span class="keyword">double</span> dx )</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> Nt,Nconf; </span><br><span class="line">	<span class="keyword">double</span> aomega; <span class="comment">// a(lattice spacing)*omega(angular frequency)</span></span><br><span class="line">	<span class="keyword">double</span> delta;  <span class="comment">//update step size</span></span><br><span class="line">	<span class="comment">// char output_path[200]; // output file path</span></span><br><span class="line">    aomega=aw;</span><br><span class="line">    Nt=lie;</span><br><span class="line">    Nconf=hang;</span><br><span class="line">    aomega=aw;</span><br><span class="line">    delta=dx;</span><br><span class="line"></span><br><span class="line"><span class="comment">// read in input</span></span><br><span class="line">	<span class="comment">// read_double("aomega", &amp;aomega);</span></span><br><span class="line">	<span class="comment">// read_int("Nt", &amp;Nt);</span></span><br><span class="line">	<span class="comment">// read_int("Nconf", &amp;Nconf);</span></span><br><span class="line">	<span class="comment">// read_double("delta", &amp;delta);</span></span><br><span class="line">	<span class="comment">// read_string("output_path", output_path);</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">double</span>* x1 = <span class="keyword">new</span> <span class="keyword">double</span>[Nt];</span><br><span class="line">	<span class="keyword">double</span>* x2 = <span class="keyword">new</span> <span class="keyword">double</span>[Nt];</span><br><span class="line">	<span class="comment">// double* x = new double[Nt*Nconf];</span></span><br><span class="line">	<span class="built_in">std</span>::ofstream out;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">std</span>::default_random_engine seed;</span><br><span class="line">       seed.seed(time(<span class="literal">NULL</span>));</span><br><span class="line">        <span class="comment">// seed.seed(1234);</span></span><br><span class="line">    <span class="comment">//    std::uniform_real_distribution&lt;double&gt; ran1(-0.1,0.1);</span></span><br><span class="line">        <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; ran2(<span class="number">-1.0</span>,<span class="number">1.0</span>);</span><br><span class="line">        <span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; ran3(<span class="number">0</span>,<span class="number">1.0</span>);</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="comment">// initialize the configuration to be a random number between [-0.1, 0.1]	</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Nt; i++)</span><br><span class="line">		<span class="comment">// *(x1+i) = *(x2+i) = ran1(seed);</span></span><br><span class="line">		*(x1+i) = *(x2+i) = <span class="number">0.0</span>;  <span class="comment">// cold start</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// update the configuration with metropolis algorithm</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; t_iter;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Nt; i++) t_iter.push_back(i);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> n=<span class="number">0</span>; n&lt;Nconf; n++)&#123; </span><br><span class="line">		<span class="built_in">std</span>::random_shuffle (t_iter.begin(), t_iter.end());</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> t=<span class="number">0</span>; t&lt;Nt; t++)&#123;</span><br><span class="line">			<span class="keyword">int</span> i=t_iter[t];</span><br><span class="line">			*(x2+i) = *(x1+i) + delta*ran2(seed);</span><br><span class="line">			<span class="keyword">if</span>(ran3(seed) &lt; weight(*(x2+(i<span class="number">-1</span>+Nt)%Nt),*(x2+i),*(x2+(i+<span class="number">1</span>)%Nt),aomega)/weight(*(x1+(i<span class="number">-1</span>+Nt)%Nt),*(x1+i),*(x1+(i+<span class="number">1</span>)%Nt), aomega))</span><br><span class="line">				*(x1+i)=*(x2+i);  <span class="comment">// accept</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				*(x2+i)=*(x1+i);  <span class="comment">// reject</span></span><br><span class="line">		&#125;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;Nt; i++)</span><br><span class="line">			*(x + n*Nt + i) = *(x2 + i);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>编译指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">g++ fp.cpp -shared -fPIC -o fp.so</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-07-22/create_ap-add-ipv6/" rel="next" title="树莓派create_ap做wifi热点添加ipv6支持">
+                <i class="fa fa-chevron-left"></i> 树莓派create_ap做wifi热点添加ipv6支持
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-07-26/qed1/" rel="prev" title="基于路径积分-蒙特卡洛方法的简单一维场">
+                基于路径积分-蒙特卡洛方法的简单一维场 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">dogcraft</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ybw2016v" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons">
+              </a>
+            </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://rmcar.dogcraft.top" title="自动化挪车" target="_blank">自动化挪车</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cuf.dogcraft.top" title="Cuf" target="_blank">Cuf</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dogcraft</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aws.dogcraft.top/lodog/default.css">
+        <script src="https://aws.dogcraft.top/lodog/gitment.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'ybw2016v',
+            repo: 'ybw2016v.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '6f02ff7c2c06332bfb583c6b0df8d788d5c81f28',
+            
+                client_id: '860d26fc1f02df3b590d'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

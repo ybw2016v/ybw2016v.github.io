@@ -80,8 +80,6 @@
 
 
 
-  
-
 
   <link rel="alternate" href="/atom.xml" title="Dogcraft" type="application/atom+xml">
 
@@ -97,7 +95,7 @@
 <meta property="og:site_name" content="Dogcraft">
 <meta property="og:description" content="树莓派系统服务注册今天给树莓派安装AriaNG时将aria2启动脚本添加/etc/init.d/后报错，系统未发现该服务。后经多方查找，发现只在/etc/init.d/添加启动脚本还不够，需要再次运行 1pi@raspberrypi:~ $ sudo update-rc.d aria2c defaults  其中 aria2c是启动脚本的名字。 附aria2c内容 1234567891011121">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-11T09:10:59.758Z">
+<meta property="og:updated_time" content="2019-07-26T07:34:50.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派系统服务注册">
 <meta name="twitter:description" content="树莓派系统服务注册今天给树莓派安装AriaNG时将aria2启动脚本添加/etc/init.d/后报错，系统未发现该服务。后经多方查找，发现只在/etc/init.d/添加启动脚本还不够，需要再次运行 1pi@raspberrypi:~ $ sudo update-rc.d aria2c defaults  其中 aria2c是启动脚本的名字。 附aria2c内容 1234567891011121">
@@ -326,6 +324,8 @@
 <p>其中 <code>aria2c</code>是启动脚本的名字。</p>
 <p>附<code>aria2c</code>内容</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## BEGIN INIT INFO</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Provides: aria2c</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Required-Start:    <span class="variable">$network</span> <span class="variable">$local_fs</span> <span class="variable">$remote_fs</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Required-Stop:     <span class="variable">$network</span> <span class="variable">$local_fs</span> <span class="variable">$remote_fs</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Default-Start:     2 3 4 5</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Default-Stop:      0 1 6</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Short-Description: aria2c RPC init script.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Description: Starts and stops aria2 RPC services.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## END INIT INFO</span></span></span><br><span class="line"></span><br><span class="line">USER=root</span><br><span class="line">RETVAL=0</span><br><span class="line"></span><br><span class="line">case "$1" in  </span><br><span class="line">    start)  </span><br><span class="line">        echo "Starting service Aria2..."</span><br><span class="line">        aria2c --conf-path=/path/to/config/aria2.conf -D  </span><br><span class="line">        echo "Start service done."  </span><br><span class="line">    ;;  </span><br><span class="line">    stop)  </span><br><span class="line">        echo "Stoping service Aria2..."  </span><br><span class="line">        killall aria2c   </span><br><span class="line">        echo "Stop service done."  </span><br><span class="line">    ;;  </span><br><span class="line">esac  </span><br><span class="line"></span><br><span class="line">exit $RETVAL</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     
@@ -358,6 +358,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-07-22/create_ap-add-ipv6/" rel="prev" title="树莓派create_ap做wifi热点添加ipv6支持">
+                树莓派create_ap做wifi热点添加ipv6支持 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -441,7 +445,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
